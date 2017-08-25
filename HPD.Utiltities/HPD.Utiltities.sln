@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPD.Utilities", "HPD.Utilities\HPD.Utilities.csproj", "{58E77BA3-50F3-4CE1-80B4-933976338B57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPD.Utiltities.Test", "HPD.Utiltities.Test\HPD.Utiltities.Test.csproj", "{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{58E77BA3-50F3-4CE1-80B4-933976338B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58E77BA3-50F3-4CE1-80B4-933976338B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58E77BA3-50F3-4CE1-80B4-933976338B57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
