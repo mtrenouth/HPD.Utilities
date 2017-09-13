@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Configuration;
