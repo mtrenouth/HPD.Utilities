@@ -4,9 +4,9 @@ using Microsoft.AspNet.Identity;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Configuration;
-namespace HPD.Utilities
+namespace HPD.Utilities.Email
 {
-    public class SendGridEmailService : Microsoft.AspNet.Identity.IIdentityMessageService
+    public class SendGridEmailService : IEmailService
     {
         public static string DefaultFromAddress { get; set; }
         private ISendGridClient client { get; set; }
@@ -15,9 +15,23 @@ namespace HPD.Utilities
         {
             this.client = client;
         }
-
-
-        public async Task SendMessage(
+        public void SendMessage(
+                string ToAddress,
+                string FromAddress,
+                string Subject,
+                string BodyHtml,
+                string BodyPlainText = null
+            )
+        {
+            var from = new EmailAddress(FromAddress);
+            var subject = Subject;
+            var to = new EmailAddress(ToAddress);
+            var plainTextContent = BodyPlainText;
+            var htmlContent = BodyHtml;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var result = client.SendEmailAsync(msg).Result;
+        }
+        public async Task SendMessageAsync(
                 string ToAddress,
                 string FromAddress,
                 string Subject,
@@ -34,10 +48,5 @@ namespace HPD.Utilities
             await client.SendEmailAsync(msg);
         }
 
-        public async Task SendAsync(IdentityMessage message)
-        {
-            await SendMessage(message.Destination, SendGridEmailService.DefaultFromAddress,
-                message.Subject, message.Body);
-        }
     }
 }

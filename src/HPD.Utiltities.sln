@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPD.Utilities", "HPD.Utilit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPD.Utiltities.Test", "HPD.Utiltities.Test\HPD.Utiltities.Test.csproj", "{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPD.Utilities.Identity", "HPD.Utilities.Identity\HPD.Utilities.Identity.csproj", "{A4CC79E2-EAD7-4DCB-838A-6159765816A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4CC79E2-EAD7-4DCB-838A-6159765816A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4CC79E2-EAD7-4DCB-838A-6159765816A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4CC79E2-EAD7-4DCB-838A-6159765816A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4CC79E2-EAD7-4DCB-838A-6159765816A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

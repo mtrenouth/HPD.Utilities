@@ -31,8 +31,8 @@ namespace HPD.Utilities.Tests
             string BodyHtml = "<p>Body</p>";
             string BodyPlainText = "Body";
 
-            var sendgridService = new HPD.Utilities.SendGridEmailService(sendgridClient.Object);
-            await sendgridService.SendMessage(ToAddress, FromAddress, Subject, BodyHtml, BodyPlainText);
+            var sendgridService = new HPD.Utilities.Email.SendGridEmailService(sendgridClient.Object);
+            sendgridService.SendMessage(ToAddress, FromAddress, Subject, BodyHtml, BodyPlainText);
             var emailPersonalization = message.Personalizations.First();
             Assert.AreEqual(message.From.Email, FromAddress);
             Assert.AreEqual(emailPersonalization.Subject, Subject);
