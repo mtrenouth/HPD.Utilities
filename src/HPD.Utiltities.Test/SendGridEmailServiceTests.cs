@@ -11,14 +11,13 @@ namespace HPD.Utilities.Tests
     [TestClass()]
     public class SendGridEmailServiceTests
     {
-        SendGrid.ISendGridClient client = null;
         [TestInitialize]
         public void Init()
         {
         }
         [TestMethod()]
         [TestCategory("Integration")]
-        public async Task SendMessageTest()
+        public void SendMessageTest()
         {
             SendGrid.Helpers.Mail.SendGridMessage message = null;
             var sendgridClient = new Mock<SendGrid.ISendGridClient>();
