@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPD.Utilities", "HPD.Utilities\HPD.Utilities.csproj", "{58E77BA3-50F3-4CE1-80B4-933976338B57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPD.Utiltities.Test", "HPD.Utiltities.Test\HPD.Utiltities.Test.csproj", "{2EAD606A-6DD2-4C8E-9A57-4B6B033BBED7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPD.Utilities.Identity", "HPD.Utilities.Identity\HPD.Utilities.Identity.csproj", "{A4CC79E2-EAD7-4DCB-838A-6159765816A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{6519769F-6D61-4833-BF03-6D0919D9445C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EEDB5F41-3B83-439F-BAE6-5A92942A11E7}
 	EndGlobalSection
 EndGlobal
