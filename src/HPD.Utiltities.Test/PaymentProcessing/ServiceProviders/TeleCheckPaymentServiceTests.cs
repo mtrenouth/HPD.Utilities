@@ -10,6 +10,8 @@ using Moq;
 namespace HPD.Utilities.PaymentProcessing.ServiceProviders.Tests
 {
     [TestClass()]
+    [TestCategory("Integration")]
+    [TestCategory("Paypal")]
     public class TeleCheckPaymentServiceTests
     {
         HPD.Utilities.PaymentProcessing.IPayentService provider;

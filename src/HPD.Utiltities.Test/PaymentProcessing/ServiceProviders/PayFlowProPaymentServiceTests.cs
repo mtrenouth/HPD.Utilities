@@ -14,6 +14,8 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders.Tests
     {
         HPD.Utilities.PaymentProcessing.IPayentService provider;
         [TestInitialize]
+        [TestCategory("Integration")]
+        [TestCategory("Paypal")]
         public void Setup()
         {
             var ConfirmGenerator = new Mock<HPD.Utilities.PaymentProcessing.IConfirmationNumberGenerator>();
