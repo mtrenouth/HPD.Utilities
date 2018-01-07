@@ -12,7 +12,7 @@ using System.Configuration;
 
 namespace HPD.Utilities.PaymentProcessing.ServiceProviders
 {
-    public class PayFlowProPaymentService : IPayentService
+    public class PayFlowProPaymentService : ICreditCardPaymentService
     {
         public string Host { get; set; }
         public int Port { get; set; }
@@ -35,16 +35,6 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             Partner = ConfigurationManager.AppSettings["PayFlowPro.Partner"];
             Password = ConfigurationManager.AppSettings["PayFlowPro.Password"];
             Verbosity = ConfigurationManager.AppSettings["PayFlowPro.Verbosity"];
-        }
-
-        public PaymentResponse BusinessCheckPayment(BusinessCheckPaymentRequest req)
-        {
-            throw new NotSupportedException();
-        }
-
-        public PaymentResponse CheckPayment(CheckPaymentRequest req)
-        {
-            throw new NotSupportedException();
         }
 
         public PaymentResponse CreditCardPayment(CreditCardPaymentRequest req)
@@ -217,9 +207,5 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             return Bill;
         }
 
-        public PaymentResponse PersonalCheckPayment(PersonalCheckPaymentRequest req)
-        {
-            throw new NotSupportedException();
-        }
     }
 }

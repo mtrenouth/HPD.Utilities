@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace HPD.Utilities.PaymentProcessing
 {
-    public interface IPayentService
+    public interface IBusinessCheckPaymentService
     {
-        PaymentResponse CreditCardPayment(CreditCardPaymentRequest req);
-        PaymentResponse PersonalCheckPayment(PersonalCheckPaymentRequest req);
         PaymentResponse BusinessCheckPayment(BusinessCheckPaymentRequest req);
-        PaymentResponse CheckPayment(CheckPaymentRequest req);
     }
 }

@@ -14,7 +14,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders.Tests
     [TestCategory("Paypal")]
     public class PayFlowProPaymentServiceTests
     {
-        HPD.Utilities.PaymentProcessing.IPayentService provider;
+        HPD.Utilities.PaymentProcessing.ICreditCardPaymentService provider;
         [TestInitialize]
         public void Setup()
         {
@@ -27,44 +27,6 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders.Tests
 
         }
 
-        [TestMethod()]
-        public void BusinessCheckPaymentTest()
-        {
-            Assert.ThrowsException<NotSupportedException>(() =>
-            {
-                provider.BusinessCheckPayment(new BusinessCheckPaymentRequest
-                {
-                    Amount = 10,
-                    BillingInformation = null,
-                    RoutingNumber = "123456780",
-                    AccountNumber = "439085001",
-                    CheckNumber = "1001",
-                    Comment = "Test Transacction",
-                    IPAddress = "127.0.0.1",
-                    EIN_SSN = "123345678",
-                    InvoiceNumber = "Inv12433"
-                });
-            });
-        }
-
-        [TestMethod()]
-        public void CheckPaymentTest()
-        {
-            Assert.ThrowsException<NotSupportedException>(() =>
-            {
-                provider.CheckPayment(new CheckPaymentRequest
-                {
-                    Amount = 10,
-                    BillingInformation = null,
-                    RoutingNumber = "123456780",
-                    AccountNumber = "439085001",
-                    CheckNumber = "1001",
-                    Comment = "Test Transacction",
-                    IPAddress = "127.0.0.1",
-                    InvoiceNumber = "Inv12433"
-                });
-            });
-        }
 
         [TestMethod()]
         public void CreditCardPaymentTest_Succcess()
@@ -100,25 +62,5 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders.Tests
             Assert.AreEqual("12", response.ResponseCode);
         }
 
-        [TestMethod()]
-        public void PersonalCheckPaymentTest()
-        {
-            Assert.ThrowsException<NotSupportedException>(() =>
-            {
-                provider.PersonalCheckPayment(new PersonalCheckPaymentRequest
-                {
-                    Amount = 10,
-                    BillingInformation = null,
-                    RoutingNumber = "123456780",
-                    AccountNumber = "439085001",
-                    CheckNumber = "1001",
-                    Comment = "Test Transacction",
-                    IPAddress = "127.0.0.1",
-                    DriverLicenseNumber = "123456",
-                    DriverLicenseState = "CA",
-                    InvoiceNumber = "Inv12433"
-                });
-            });
-        }
     }
 }

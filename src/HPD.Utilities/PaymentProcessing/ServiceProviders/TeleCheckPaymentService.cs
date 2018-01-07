@@ -12,7 +12,7 @@ using System.Configuration;
 
 namespace HPD.Utilities.PaymentProcessing.ServiceProviders
 {
-    public class TeleCheckPaymentService : IPayentService
+    public class TeleCheckPaymentService : IBusinessCheckPaymentService, IPersonalCheckPaymentService
     {
         public string Host { get; set; }
         public int Port { get; set; }
@@ -75,6 +75,73 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             Trans.AddToExtendData(new ExtendData("CUSTIP", req.IPAddress));
 
             Trans.Verbosity = String.IsNullOrEmpty(Verbosity)? "HIGH" : Verbosity;
+
+
+            while (trxCount <= 3 && !RespRecd)
+            {
+
+                Response Resp = Trans.SubmitTransaction();
+                if (Resp != null)
+                {
+                    RespRecd = true;  // Got a response.
+                    TransactionResponse TrxnResponse = Resp.TransactionResponse;
+                    if (TrxnResponse != null)
+                        resp = ProcessTransaction(TrxnResponse);
+                }
+                else
+                {
+                    trxCount++;
+                }
+            }
+
+            if (!RespRecd)
+            {
+                resp.Success = false;
+                resp.Message = "Payment not processed.  Please contact Customer Service";
+            }
+
+            return resp;
+        }
+
+        public PaymentResponse PersonalCheckPayment(PersonalCheckPaymentRequest req)
+        {
+            var resp = new PaymentResponse();
+            Invoice Inv = new Invoice();
+            var RequestID = PayflowUtility.RequestId;
+            PayflowConnectionData Connection = new PayflowConnectionData(Host, Port, Timeout, "", 0, "", "");
+            int trxCount = 1;
+            bool RespRecd = false;
+
+            Currency Amt = new Currency(req.Amount);
+            Amt.NoOfDecimalDigits = 0;
+            Inv.Amt = Amt;
+            Inv.InvNum = req.InvoiceNumber;
+            Inv.Comment1 = req.Comment;
+
+            // Create the BillTo object.
+            Inv.BillTo = CreateBillTo(req.BillingInformation);
+
+            // Create Credit Card data object. 
+            var payment = new PayPal.Payments.DataObjects.CheckPayment(req.RoutingNumber + req.AccountNumber + req.CheckNumber);
+
+            // Create Check Tender data object.
+            var tender = new CheckTender(payment)
+            {
+                ChkType = "P",
+                DL = req.DriverLicenseState + req.DriverLicenseNumber,
+                ChkNum = req.CheckNumber
+            };
+
+
+            UserInfo TeleCheckUser = new UserInfo(User, Vendor, Partner, Password);
+
+            // Notice we set the request id earlier in the application and outside our loop.  This way if a response was not received
+            // but PayPal processed the original request, you'll receive the original response with DUPLICATE set.
+            AuthorizationTransaction Trans = new AuthorizationTransaction(TeleCheckUser, Connection, Inv, tender, RequestID);
+            Trans.AddToExtendData(new ExtendData("AUTHTYPE", "I"));
+            Trans.AddToExtendData(new ExtendData("CUSTIP", req.IPAddress));
+
+            Trans.Verbosity = String.IsNullOrEmpty(Verbosity) ? "HIGH" : Verbosity;
 
 
             while (trxCount <= 3 && !RespRecd)
@@ -201,81 +268,5 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             return Bill;
         }
 
-        public PaymentResponse CheckPayment(CheckPaymentRequest req)
-        {
-            throw new NotSupportedException();
-        }
-
-        public PaymentResponse CreditCardPayment(CreditCardPaymentRequest req)
-        {
-            throw new NotSupportedException();
-        }
-
-        public PaymentResponse PersonalCheckPayment(PersonalCheckPaymentRequest req)
-        {
-            var resp = new PaymentResponse();
-            Invoice Inv = new Invoice();
-            var RequestID = PayflowUtility.RequestId;
-            PayflowConnectionData Connection = new PayflowConnectionData(Host, Port, Timeout, "", 0, "", "");
-            int trxCount = 1;
-            bool RespRecd = false;
-
-            Currency Amt = new Currency(req.Amount);
-            Amt.NoOfDecimalDigits = 0;
-            Inv.Amt = Amt;
-            Inv.InvNum = req.InvoiceNumber;
-            Inv.Comment1 = req.Comment;
-
-            // Create the BillTo object.
-            Inv.BillTo = CreateBillTo(req.BillingInformation);
-
-            // Create Credit Card data object. 
-            var payment = new PayPal.Payments.DataObjects.CheckPayment(req.RoutingNumber + req.AccountNumber + req.CheckNumber);
-
-            // Create Check Tender data object.
-            var tender = new CheckTender(payment)
-            {
-                ChkType = "P",
-                DL = req.DriverLicenseState + req.DriverLicenseNumber,
-                ChkNum = req.CheckNumber
-            };
-
-
-            UserInfo TeleCheckUser = new UserInfo(User, Vendor, Partner, Password);
-
-            // Notice we set the request id earlier in the application and outside our loop.  This way if a response was not received
-            // but PayPal processed the original request, you'll receive the original response with DUPLICATE set.
-            AuthorizationTransaction Trans = new AuthorizationTransaction(TeleCheckUser, Connection, Inv, tender, RequestID);
-            Trans.AddToExtendData(new ExtendData("AUTHTYPE", "I"));
-            Trans.AddToExtendData(new ExtendData("CUSTIP", req.IPAddress));
-
-            Trans.Verbosity = String.IsNullOrEmpty(Verbosity) ? "HIGH" : Verbosity;
-
-
-            while (trxCount <= 3 && !RespRecd)
-            {
-
-                Response Resp = Trans.SubmitTransaction();
-                if (Resp != null)
-                {
-                    RespRecd = true;  // Got a response.
-                    TransactionResponse TrxnResponse = Resp.TransactionResponse;
-                    if (TrxnResponse != null)
-                        resp = ProcessTransaction(TrxnResponse);
-                }
-                else
-                {
-                    trxCount++;
-                }
-            }
-
-            if (!RespRecd)
-            {
-                resp.Success = false;
-                resp.Message = "Payment not processed.  Please contact Customer Service";
-            }
-
-            return resp;
-        }
     }
 }

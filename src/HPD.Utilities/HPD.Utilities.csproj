@@ -71,10 +71,13 @@
     <Compile Include="PaymentProcessing\BusinessCheckPaymentRequest.cs" />
     <Compile Include="PaymentProcessing\CheckPaymentRequest.cs" />
     <Compile Include="PaymentProcessing\DefaultConfirmationNumberGenerator.cs" />
+    <Compile Include="PaymentProcessing\ICheckPaymentService.cs" />
     <Compile Include="PaymentProcessing\IConfirmationNumberGenerator.cs" />
+    <Compile Include="PaymentProcessing\ICreditCardPaymentService.cs" />
+    <Compile Include="PaymentProcessing\IPersonalCheckPaymentService.cs" />
     <Compile Include="PaymentProcessing\PersonalCheckPaymentRequest.cs" />
     <Compile Include="PaymentProcessing\CreditCardPaymentRequest.cs" />
-    <Compile Include="PaymentProcessing\IPaymentService.cs" />
+    <Compile Include="PaymentProcessing\IBusinessCheckPaymentService.cs" />
     <Compile Include="PaymentProcessing\BillingInformation.cs" />
     <Compile Include="PaymentProcessing\PaymentResponse.cs" />
     <Compile Include="PaymentProcessing\ServiceProviders\PayFlowProPaymentService.cs" />
