@@ -80,6 +80,7 @@
     <Compile Include="PaymentProcessing\IBusinessCheckPaymentService.cs" />
     <Compile Include="PaymentProcessing\BillingInformation.cs" />
     <Compile Include="PaymentProcessing\PaymentResponse.cs" />
+    <Compile Include="PaymentProcessing\ServiceProviders\PayflowProNetAPICreditCardPaymentService.cs" />
     <Compile Include="PaymentProcessing\ServiceProviders\PayFlowProPaymentService.cs" />
     <Compile Include="PaymentProcessing\ServiceProviders\TeleCheckPaymentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
