@@ -26,8 +26,8 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
         {
             _confirmationNumberGenerator = ConfirmationNumberGenerator;
             Host = ConfigurationManager.AppSettings["PayflowNetAPI.Host"];
-            Port = int.Parse(string.IsNullOrEmpty(ConfigurationManager.AppSettings["PayflowNetAPI.Port"]) ? "443" : ConfigurationManager.AppSettings["PayFlowPro.Port"]);
-            Timeout = int.Parse(string.IsNullOrEmpty(ConfigurationManager.AppSettings["PayflowNetAPI.Timeout"]) ? "30" : ConfigurationManager.AppSettings["PayFlowPro.Timeout"]);
+            Port = int.Parse(string.IsNullOrEmpty(ConfigurationManager.AppSettings["PayflowNetAPI.Port"]) ? "443" : ConfigurationManager.AppSettings["PayflowNetAPI.Port"]);
+            Timeout = int.Parse(string.IsNullOrEmpty(ConfigurationManager.AppSettings["PayflowNetAPI.Timeout"]) ? "30" : ConfigurationManager.AppSettings["PayflowNetAPI.Timeout"]);
             User = ConfigurationManager.AppSettings["PayflowNetAPI.User"];
             Vendor = ConfigurationManager.AppSettings["PayflowNetAPI.Vendor"];
             Partner = ConfigurationManager.AppSettings["PayflowNetAPI.Partner"];
