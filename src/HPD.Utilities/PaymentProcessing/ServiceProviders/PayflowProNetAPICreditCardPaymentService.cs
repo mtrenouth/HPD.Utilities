@@ -41,10 +41,10 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             StringBuilder request = new StringBuilder();
             request.Append($"TRXTYPE=S");
             request.Append($"&ACCT={req.AccountNumber}");
-            request.Append($"&EXPDATE={req.Expiration}");
+            request.Append($"&EXPDATE={req.Expiration.Replace("/","")}");
             request.Append($"&TENDER=C");
             request.Append($"&INVNUM={req.ConfirmationNumber}");
-            request.Append($"&AMT={req.Amount}");
+            request.Append($"&AMT={req.Amount:0.##}");
             request.Append($"&USER={User}");
             request.Append($"&VENDOR={Vendor}");
             request.Append($"&PARTNER={Partner}");
