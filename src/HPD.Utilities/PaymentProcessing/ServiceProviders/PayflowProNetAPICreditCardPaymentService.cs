@@ -50,6 +50,21 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             request.Append($"&PARTNER={Partner}");
             request.Append($"&PWD={Password}");
             request.Append($"&COMMENT1={req.Comment}");
+            if(req.BillingInformation != null)
+            {
+                if (!string.IsNullOrWhiteSpace(req.BillingInformation.BillToFirstName))
+                    request.Append($"&BILLTOFIRSTNAME={req.BillingInformation.BillToFirstName}");
+                if (!string.IsNullOrWhiteSpace(req.BillingInformation.BillToLastName))
+                    request.Append($"&BILLTOLASTNAME={req.BillingInformation.BillToLastName}");
+                if (!string.IsNullOrWhiteSpace(req.BillingInformation.BilingZipcode))
+                    request.Append($"&BILLTOZIP={req.BillingInformation.BilingZipcode}");
+                if(!string.IsNullOrWhiteSpace(req.BillingInformation.BillingAddress))
+                    request.Append($"&BILLTOSTREET={req.BillingInformation.BillingAddress}");
+                if (!string.IsNullOrWhiteSpace(req.BillingInformation.BillingCity))
+                    request.Append($"&BILLTOCITY={req.BillingInformation.BillingCity}");
+                if (!string.IsNullOrWhiteSpace(req.BillingInformation.BillingState))
+                    request.Append($"&BILLTOSTATE={req.BillingInformation.BillingState}");
+            }
             request.Append("&VERBOSITY=HIGH");
             PayflowNETAPI PayflowNETAPI = new PayflowNETAPI(Host, Port, Timeout);
 
