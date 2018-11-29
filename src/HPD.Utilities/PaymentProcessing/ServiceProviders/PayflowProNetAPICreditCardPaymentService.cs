@@ -21,6 +21,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
         public string Partner { get; set; }
         public string Password { get; set; }
         public string Verbosity { get; set; }
+        public Microsoft.ApplicationInsights.TelemetryClient TelemetryClient;
         IConfirmationNumberGenerator _confirmationNumberGenerator;
         public PayflowNetAPICreditCardPaymentService(IConfirmationNumberGenerator ConfirmationNumberGenerator)
         {
@@ -33,6 +34,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             Partner = ConfigurationManager.AppSettings["PayflowNetAPI.Partner"];
             Password = ConfigurationManager.AppSettings["PayflowNetAPI.Password"];
             Verbosity = ConfigurationManager.AppSettings["PayflowNetAPI.Verbosity"];
+            TelemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
         }
 
 
@@ -69,6 +71,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             PayflowNETAPI PayflowNETAPI = new PayflowNETAPI(Host, Port, Timeout);
 
             string PayflowResponse = PayflowNETAPI.SubmitTransaction(request.ToString(), PayflowUtility.RequestId);
+
             var results = PayflowResponse.Split(new char[] { '&' }).Select(x => new { Name = x.Split('=')[0], Value = x.Split('=')[1] });
             var RESPMSG = results.Where(x => x.Name == "RESPMSG").DefaultIfEmpty(null).Single().Value;
             if (RESPMSG == "Approved")
@@ -84,6 +87,10 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             }
             else
             {
+                var PaymentResults = new Dictionary<string, string>();
+                foreach (var item in results)
+                    PaymentResults.Add(item.Name, item.Value);
+                TelemetryClient.TrackEvent("Failed CC Payment", PaymentResults);
                 return new PaymentResponse
                 {
                     Amount = req.Amount,
