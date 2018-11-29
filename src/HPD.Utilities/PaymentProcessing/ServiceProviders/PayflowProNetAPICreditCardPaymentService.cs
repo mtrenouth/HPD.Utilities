@@ -95,6 +95,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
                     foreach (var item in results)
                         PaymentResults.Add(item.Name, item.Value);
                     TelemetryClient.TrackEvent("Failed CC Payment", PaymentResults);
+                    TelemetryClient.Flush();
                 }
                 return new PaymentResponse
                 {
