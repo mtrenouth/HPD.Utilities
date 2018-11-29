@@ -21,6 +21,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
         public string Partner { get; set; }
         public string Password { get; set; }
         public string Verbosity { get; set; }
+        public bool LogFailures { get; set; }
         public Microsoft.ApplicationInsights.TelemetryClient TelemetryClient;
         IConfirmationNumberGenerator _confirmationNumberGenerator;
         public PayflowNetAPICreditCardPaymentService(IConfirmationNumberGenerator ConfirmationNumberGenerator)
@@ -33,7 +34,8 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             Vendor = ConfigurationManager.AppSettings["PayflowNetAPI.Vendor"];
             Partner = ConfigurationManager.AppSettings["PayflowNetAPI.Partner"];
             Password = ConfigurationManager.AppSettings["PayflowNetAPI.Password"];
-            Verbosity = ConfigurationManager.AppSettings["PayflowNetAPI.Verbosity"];
+            bool.TryParse(ConfigurationManager.AppSettings["PayflowNetAPI.LogFailure"], out bool logOnFail);
+            LogFailures = logOnFail;
             TelemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
         }
 
@@ -87,10 +89,13 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             }
             else
             {
-                var PaymentResults = new Dictionary<string, string>();
-                foreach (var item in results)
-                    PaymentResults.Add(item.Name, item.Value);
-                TelemetryClient.TrackEvent("Failed CC Payment", PaymentResults);
+                if (LogFailures)
+                {
+                    var PaymentResults = new Dictionary<string, string>();
+                    foreach (var item in results)
+                        PaymentResults.Add(item.Name, item.Value);
+                    TelemetryClient.TrackEvent("Failed CC Payment", PaymentResults);
+                }
                 return new PaymentResponse
                 {
                     Amount = req.Amount,
