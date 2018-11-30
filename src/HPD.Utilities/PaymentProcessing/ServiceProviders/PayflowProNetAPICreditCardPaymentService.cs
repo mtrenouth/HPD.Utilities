@@ -73,7 +73,6 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             PayflowNETAPI PayflowNETAPI = new PayflowNETAPI(Host, Port, Timeout);
 
             string PayflowResponse = PayflowNETAPI.SubmitTransaction(request.ToString(), PayflowUtility.RequestId);
-
             var results = PayflowResponse.Split(new char[] { '&' }).Select(x => new { Name = x.Split('=')[0], Value = x.Split('=')[1] });
             var RESPMSG = results.Where(x => x.Name == "RESPMSG").DefaultIfEmpty(null).Single().Value;
             if (RESPMSG == "Approved")
@@ -84,7 +83,8 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
                     AuthCode = results.Where(x => x.Name == "AUTHCODE").DefaultIfEmpty(null).Single().Value,
                     Transaction = results.Where(x => x.Name == "PNREF").DefaultIfEmpty(null).Single().Value,
                     Success = true,
-                    Message = RESPMSG
+                    Message = RESPMSG,
+                    ProviderResponse = PayflowResponse
                 };
             }
             else
@@ -92,13 +92,10 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
                 if (LogFailures)
                 {
                     var PaymentResults = new Dictionary<string, string>();
-                    foreach (var item in results)
-                        PaymentResults.Add(item.Name, item.Value);
-                    TelemetryClient.TrackEvent("Failed CC Payment", PaymentResults);
-                    TelemetryClient.Flush();
                 }
                 return new PaymentResponse
                 {
+                    ProviderResponse = PayflowResponse,
                     Amount = req.Amount,
                     Message = RESPMSG,
                     ResponseText = RESPMSG,
