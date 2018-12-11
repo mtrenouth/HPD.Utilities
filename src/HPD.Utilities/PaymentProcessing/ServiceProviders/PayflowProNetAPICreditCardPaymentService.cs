@@ -45,7 +45,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             StringBuilder request = new StringBuilder();
             request.Append($"TRXTYPE=S");
             request.Append($"&ACCT={req.AccountNumber}");
-            request.Append($"&EXPDATE={req.Expiration.Replace("/","")}");
+            request.Append($"&EXPDATE={req.Expiration.Replace("/", "")}");
             request.Append($"&TENDER=C");
             request.Append($"&INVNUM={req.ConfirmationNumber}");
             request.Append($"&AMT={req.Amount:0.##}");
@@ -54,7 +54,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             request.Append($"&PARTNER={Partner}");
             request.Append($"&PWD={Password}");
             request.Append($"&COMMENT1={req.Comment}");
-            if(req.BillingInformation != null)
+            if (req.BillingInformation != null)
             {
                 if (!string.IsNullOrWhiteSpace(req.BillingInformation.BillToFirstName))
                     request.Append($"&BILLTOFIRSTNAME={req.BillingInformation.BillToFirstName}");
@@ -62,7 +62,7 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
                     request.Append($"&BILLTOLASTNAME={req.BillingInformation.BillToLastName}");
                 if (!string.IsNullOrWhiteSpace(req.BillingInformation.BilingZipcode))
                     request.Append($"&BILLTOZIP={req.BillingInformation.BilingZipcode}");
-                if(!string.IsNullOrWhiteSpace(req.BillingInformation.BillingAddress))
+                if (!string.IsNullOrWhiteSpace(req.BillingInformation.BillingAddress))
                     request.Append($"&BILLTOSTREET={req.BillingInformation.BillingAddress}");
                 if (!string.IsNullOrWhiteSpace(req.BillingInformation.BillingCity))
                     request.Append($"&BILLTOCITY={req.BillingInformation.BillingCity}");
@@ -74,35 +74,30 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
 
             string PayflowResponse = PayflowNETAPI.SubmitTransaction(request.ToString(), PayflowUtility.RequestId);
             var results = PayflowResponse.Split(new char[] { '&' }).Select(x => new { Name = x.Split('=')[0], Value = x.Split('=')[1] });
-            var RESPMSG = results.Where(x => x.Name == "RESPMSG").DefaultIfEmpty(null).Single().Value;
-            if (RESPMSG == "Approved")
+            var RESPMSG = results.Where(x => x.Name == "RESPMSG").DefaultIfEmpty(null).Single();
+            if (RESPMSG != null)
             {
-                return new PaymentResponse
+                if (RESPMSG.Value == "Approved")
                 {
-                    Amount = req.Amount,
-                    AuthCode = results.Where(x => x.Name == "AUTHCODE").DefaultIfEmpty(null).Single().Value,
-                    Transaction = results.Where(x => x.Name == "PNREF").DefaultIfEmpty(null).Single().Value,
-                    Success = true,
-                    Message = RESPMSG,
-                    ProviderResponse = PayflowResponse
-                };
-            }
-            else
-            {
-                if (LogFailures)
-                {
-                    var PaymentResults = new Dictionary<string, string>();
+                    return new PaymentResponse
+                    {
+                        Amount = req.Amount,
+                        AuthCode = results.Where(x => x.Name == "AUTHCODE").DefaultIfEmpty(null).Single().Value,
+                        Transaction = results.Where(x => x.Name == "PNREF").DefaultIfEmpty(null).Single().Value,
+                        Success = true,
+                        Message = RESPMSG.Value,
+                        ProviderResponse = PayflowResponse
+                    };
                 }
-                return new PaymentResponse
-                {
-                    ProviderResponse = PayflowResponse,
-                    Amount = req.Amount,
-                    Message = RESPMSG,
-                    ResponseText = RESPMSG,
-                    Success = false,
-                };
             }
-
+            return new PaymentResponse
+            {
+                ProviderResponse = PayflowResponse,
+                Amount = req.Amount,
+                Message = RESPMSG == null ? "Payment Provider did not provide valid response" : RESPMSG.Value,
+                ResponseText = RESPMSG == null ? "Payment Provider did not provide valid response" : RESPMSG.Value,
+                Success = false,
+            };
         }
     }
 }
