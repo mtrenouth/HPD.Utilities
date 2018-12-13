@@ -47,13 +47,13 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             request.Append($"&ACCT={req.AccountNumber}");
             request.Append($"&EXPDATE={req.Expiration.Replace("/", "")}");
             request.Append($"&TENDER=C");
-            request.Append($"&INVNUM={req.ConfirmationNumber}");
+            request.Append($"&INVNUM={Uri.EscapeDataString(req.ConfirmationNumber)}");
             request.Append($"&AMT={req.Amount:0.##}");
             request.Append($"&USER={User}");
             request.Append($"&VENDOR={Vendor}");
             request.Append($"&PARTNER={Partner}");
             request.Append($"&PWD={Password}");
-            request.Append($"&COMMENT1={req.Comment}");
+            request.Append($"&COMMENT1={Uri.EscapeDataString(req.Comment)}");
             if (req.BillingInformation != null)
             {
                 if (!string.IsNullOrWhiteSpace(req.BillingInformation.BillToFirstName))
