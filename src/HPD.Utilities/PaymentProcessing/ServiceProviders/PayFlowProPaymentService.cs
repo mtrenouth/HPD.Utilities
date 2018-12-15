@@ -47,8 +47,8 @@ namespace HPD.Utilities.PaymentProcessing.ServiceProviders
             bool RespRecd = false;
 
 
-            if (string.IsNullOrEmpty(req.ConfirmationNumber))
-                req.ConfirmationNumber = _confirmationNumberGenerator.GenerateConfirmationNumber();
+            if (string.IsNullOrEmpty(req.InvoiceNumber))
+                req.InvoiceNumber = _confirmationNumberGenerator.GenerateConfirmationNumber();
 
 
             Currency Amt = new Currency(req.Amount)

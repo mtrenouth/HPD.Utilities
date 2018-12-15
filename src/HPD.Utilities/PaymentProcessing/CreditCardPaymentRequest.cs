@@ -13,7 +13,7 @@ namespace HPD.Utilities.PaymentProcessing
         public decimal Amount { get; set; }
         public string CVC { get; set; }
         public string Expiration { get; set; }
-        public string ConfirmationNumber { get; set; }
+        public string InvoiceNumber { get; set; }
         public string RoutingNumber { get; set; }
         public string IPAddress { get; set; }
         public string Comment { get; set; }
